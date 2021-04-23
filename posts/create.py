@@ -23,8 +23,8 @@ def create_post(event, context):
         'SK': "USER#{}".format(data['userId']),
         'postText': data['postText'],
         'postImgUrl': data['postImgUrl'],
+        'status': data['status'],
         'createdOn': timestamp
-
 
     }
 

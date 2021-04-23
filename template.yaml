@@ -71,7 +71,7 @@ Resources:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: posts/
-      Handler: create.create_user
+      Handler: create.create_post
       Runtime: python3.8
       Policies:
         - DynamoDBCrudPolicy:
@@ -80,8 +80,23 @@ Resources:
         HttpPost:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /users
+            Path: /post
             Method: post
+  UpdatePostFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: posts/
+      Handler: update.update_post
+      Runtime: python3.8
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: data
+      Events:
+        HttpPost:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /post/{postId}
+            Method: put
 
   DynamoDBTable:
     Type: AWS::DynamoDB::Table  
@@ -134,3 +149,9 @@ Outputs:
   CreateUserApi:
     Description: "API Gateway endpoint URL for Prod stage for Create User function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/users"
+  CreatePostApi:
+    Description: "API Gateway endpoint URL for Prod stage for Create Post function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/post"
+  UpdatePostApi:
+    Description: "API Gateway endpoint URL for Prod stage for update Post function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/post/{postId}"
