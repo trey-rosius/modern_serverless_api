@@ -1,0 +1,11 @@
+{
+    "serverlessConsole.services": [
+        {
+            "type": "dynamodb",
+            "title": "data",
+            "tableName": "data",
+            "awsProfile": "default",
+            "region": "us-east-1"
+        }
+    ]
+}
