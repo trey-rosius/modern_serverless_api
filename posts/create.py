@@ -8,26 +8,23 @@ import boto3
 dynamodb = boto3.resource('dynamodb')
 
 
-def create_user(event, context):
+def create_post(event, context):
     data = json.loads(event['body'])
-    if 'firstName' not in data:
+    if 'postText' not in data:
         logging.error("Validation Failed")
-        raise Exception("Couldn't create the user ")
+        raise Exception("Couldn't create the post")
 
     timestamp = str(time.time())
 
     table = dynamodb.Table(os.environ['TABLE_NAME'])
 
     item = {
-        'PK': "USER#{}".format(str(uuid.uuid1())),
-        'SK': "METADATA#{}".format(str(uuid.uuid1())),
-        'userId': str(uuid.uuid1()),
-        'firstName': data['firstName'],
-        "lastName": data['lastName'],
-        'profilePicture': data['profilePicture'],
-        'age': data['age'],
-        'emailAddress': data['emailAddress'],
-        'createdOn': timestamp,
+        'PK': "POST#{}".format(str(uuid.uuid1())),
+        'SK': "USER#{}".format(data['userId']),
+        'postText': data['postText'],
+        'postImgUrl': data['postImgUrl'],
+        'createdOn': timestamp
+
 
     }
 

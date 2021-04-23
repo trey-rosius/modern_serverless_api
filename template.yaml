@@ -67,6 +67,21 @@ Resources:
           Properties:
             Path: /users
             Method: post
+  CreatePostFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: posts/
+      Handler: create.create_user
+      Runtime: python3.8
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: data
+      Events:
+        HttpPost:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /users
+            Method: post
 
   DynamoDBTable:
     Type: AWS::DynamoDB::Table  
