@@ -21,8 +21,9 @@ def update_post(event, context):
     # write the post to the database
     item = table.update_item(
         Key={
-            'PK': "POST#{}".format(event['pathParameters']['postId']),
-            'SK': "USER#{}".format(data['userId'])
+            'PK': "USER#{}".format(data['userId']),
+            'SK': "POST#{}".format(event['pathParameters']['postId'])
+
 
         },
         ExpressionAttributeNames={

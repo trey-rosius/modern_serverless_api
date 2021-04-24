@@ -8,23 +8,23 @@ import boto3
 dynamodb = boto3.resource('dynamodb')
 
 
-def create_post(event, context):
+def create_comment(event, context):
     data = json.loads(event['body'])
-    if 'postText' not in data:
+    if 'commentText' not in data:
         logging.error("Validation Failed")
-        raise Exception("Couldn't create the post")
+        raise Exception("Couldn't create a comment")
 
     timestamp = str(time.time())
 
     table = dynamodb.Table(os.environ['TABLE_NAME'])
 
     item = {
-
         'PK': "USER#{}".format(data['userId']),
-        'SK': "POST#{}".format(str(uuid.uuid1())),
-        'postId':str(uuid.uuid1()),
-        'postText': data['postText'],
-        'postImgUrl': data['postImgUrl'],
+        'SK': "COMMENT#{}".format(str(uuid.uuid1())),
+        'commentId': str(uuid.uuid1()),
+        'postId': data['postId'],
+        'userId': data['userId'],
+        'commentText': data['commentText'],
         'status': data['status'],
         'createdOn': timestamp
 

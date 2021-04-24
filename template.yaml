@@ -97,6 +97,36 @@ Resources:
           Properties:
             Path: /post/{postId}
             Method: put
+  CreateCommentFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: comments/
+      Handler: create.create_comment
+      Runtime: python3.8
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: data
+      Events:
+        HttpPost:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /comment
+            Method: post
+  GetPostCommentsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: posts/
+      Handler: get_comments_post.get_post_comments
+      Runtime: python3.8
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: data
+      Events:
+        HttpPost:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: posts/{id}/comment
+            Method: get
 
   DynamoDBTable:
     Type: AWS::DynamoDB::Table  
@@ -155,3 +185,13 @@ Outputs:
   UpdatePostApi:
     Description: "API Gateway endpoint URL for Prod stage for update Post function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/post/{postId}"
+  CreateCommentApi:
+    Description: "API Gateway endpoint URL for Prod stage for Create Comment function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/comment"
+  GetPostCommentsApi:
+    Description: "API Gateway endpoint URL for Prod stage for Get Post Comments function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/posts/{postId}/comments"
+
+
+
+
