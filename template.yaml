@@ -19,6 +19,22 @@ Globals:
 
 
 Resources:
+  CreateUserFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: users/
+      Handler: create.create_user
+      Runtime: python3.8
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: data
+
+      Events:
+        HttpPost:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /users
+            Method: post
   GetUserFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -29,44 +45,13 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: data
+
       Events:
         GetUser:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /users/{id}
             Method: get
-  GetUserDetailsFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      CodeUri: users/
-      Handler: query.query_user_details
-      Runtime: python3.8
-
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: data
-      Events:
-        GetUser:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /users/{id}/details
-            Method: get
-
-  CreateUserFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      CodeUri: users/
-      Handler: create.create_user
-      Runtime: python3.8
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: data
-      Events:
-        HttpPost:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /users
-            Method: post
   CreatePostFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -89,8 +74,8 @@ Resources:
       Handler: update.update_post
       Runtime: python3.8
       Policies:
-        - DynamoDBCrudPolicy:
-            TableName: data
+        - DynamoDBCrudPolicy
+
       Events:
         HttpPost:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -104,8 +89,8 @@ Resources:
       Handler: create.create_comment
       Runtime: python3.8
       Policies:
-        - DynamoDBCrudPolicy:
-            TableName: data
+        - DynamoDBCrudPolicy
+
       Events:
         HttpPost:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -119,13 +104,13 @@ Resources:
       Handler: get_comments_post.get_post_comments
       Runtime: python3.8
       Policies:
-        - DynamoDBCrudPolicy:
-            TableName: data
+        - DynamoDBCrudPolicy
+
       Events:
         HttpPost:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: posts/{id}/comment
+            Path: /posts/{id}/comment
             Method: get
 
   DynamoDBTable:
@@ -136,9 +121,9 @@ Resources:
           AttributeType: "S"
         - AttributeName: "SK"
           AttributeType: "S"
-
-        - AttributeName: "postId"
+        - AttributeName: "status"
           AttributeType: "S"
+
 
       KeySchema:
 
@@ -154,7 +139,7 @@ Resources:
       GlobalSecondaryIndexes:
         - IndexName: "GSI1"
           KeySchema:
-            - AttributeName: "postId"
+            - AttributeName: "status"
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"
@@ -170,15 +155,12 @@ Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  GetUserApi:
-    Description: "API Gateway endpoint URL for Prod stage Get User function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/users/{id}"
-  GetUserDetailsApi:
-    Description: "API Gateway endpoint URL for Prod stage for Get User Details function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/users/{id}/details"
   CreateUserApi:
     Description: "API Gateway endpoint URL for Prod stage for Create User function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/users"
+  GetUserApi:
+    Description: "API Gateway endpoint URL for Prod stage Get User function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/users/{id}"
   CreatePostApi:
     Description: "API Gateway endpoint URL for Prod stage for Create Post function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/post"
@@ -191,6 +173,7 @@ Outputs:
   GetPostCommentsApi:
     Description: "API Gateway endpoint URL for Prod stage for Get Post Comments function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/posts/{postId}/comments"
+
 
 
 

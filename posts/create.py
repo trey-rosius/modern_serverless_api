@@ -15,14 +15,15 @@ def create_post(event, context):
         raise Exception("Couldn't create the post")
 
     timestamp = str(time.time())
+    uniqueId = str(uuid.uuid1())
 
     table = dynamodb.Table(os.environ['TABLE_NAME'])
 
     item = {
 
         'PK': "USER#{}".format(data['userId']),
-        'SK': "POST#{}".format(str(uuid.uuid1())),
-        'postId':str(uuid.uuid1()),
+        'SK': "POST#{}".format(uniqueId),
+        'postId':str(uniqueId),
         'postText': data['postText'],
         'postImgUrl': data['postImgUrl'],
         'status': data['status'],

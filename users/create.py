@@ -17,11 +17,12 @@ def create_user(event, context):
     timestamp = str(time.time())
 
     table = dynamodb.Table(os.environ['TABLE_NAME'])
+    uniqueId = str(uuid.uuid1())
 
     item = {
-        'PK': "USER#{}".format(str(uuid.uuid1())),
-        'SK': "METADATA#{}".format(str(uuid.uuid1())),
-        'userId': str(uuid.uuid1()),
+        'PK': "USER#{}".format(uniqueId),
+        'SK': "METADATA#{}".format(uniqueId),
+        'userId': str(uniqueId),
         'firstName': data['firstName'],
         "lastName": data['lastName'],
         'profilePicture': data['profilePicture'],

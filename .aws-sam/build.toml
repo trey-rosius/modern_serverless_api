@@ -6,20 +6,6 @@ codeuri = "/Users/imac/Documents/socially_serverless_api/users"
 runtime = "python3.8"
 source_md5 = ""
 packagetype = "Zip"
-functions = ["GetUserFunction", "GetUserDetailsFunction", "CreateUserFunction"]
-
-[function_build_definitions.46a73e13-94d6-4973-a605-f89e59e0a0a3]
-codeuri = "/Users/imac/Documents/socially_serverless_api/posts"
-runtime = "python3.8"
-source_md5 = ""
-packagetype = "Zip"
-functions = ["CreatePostFunction", "UpdatePostFunction", "GetPostCommentsFunction"]
-
-[function_build_definitions.e91fb743-ac56-4aeb-8764-39b71744977c]
-codeuri = "/Users/imac/Documents/socially_serverless_api/comments"
-runtime = "python3.8"
-source_md5 = ""
-packagetype = "Zip"
-functions = ["CreateCommentFunction"]
+functions = ["CreateUserFunction", "GetUserFunction"]
 
 [layer_build_definitions]
