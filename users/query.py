@@ -8,7 +8,7 @@ from boto3.dynamodb.conditions import Key
 dynamodb = boto3.resource('dynamodb')
 
 
-def query_user_details(event, context):
+def fetch_user_and_posts(event, context):
     # print(event)
     # print(event['pathParameters'])
     print("print this ")

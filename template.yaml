@@ -80,8 +80,24 @@ Resources:
         HttpPost:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /post/{postId}
+            Path: /post/{id}
             Method: put
+  FetchUserAndPostFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: users/
+      Handler: query.fetch_user_and_posts
+      Runtime: python3.8
+      Policies:
+        - DynamoDBCrudPolicy
+
+      Events:
+        HttpPost:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /users/{id}/posts
+            Method: get
+
   CreateCommentFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -166,13 +182,16 @@ Outputs:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/post"
   UpdatePostApi:
     Description: "API Gateway endpoint URL for Prod stage for update Post function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/post/{postId}"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/post/{id}"
+  FetchUserAndPostsApi:
+    Description: "API Gateway endpoint URL for Prod stage Fetch User and Post function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/users/{id}/posts"
   CreateCommentApi:
     Description: "API Gateway endpoint URL for Prod stage for Create Comment function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/comment"
   GetPostCommentsApi:
     Description: "API Gateway endpoint URL for Prod stage for Get Post Comments function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/posts/{postId}/comments"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/posts/{id}/comments"
 
 
 

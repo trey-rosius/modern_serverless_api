@@ -22,7 +22,7 @@ def create_post(event, context):
     item = {
 
         'PK': "USER#{}".format(data['userId']),
-        'SK': "POST#{}".format(uniqueId),
+        'SK': "POST#{}#{}".format(uniqueId,timestamp),
         'postId':str(uniqueId),
         'postText': data['postText'],
         'postImgUrl': data['postImgUrl'],

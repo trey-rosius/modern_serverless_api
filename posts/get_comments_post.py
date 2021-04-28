@@ -14,7 +14,7 @@ def get_post_comments(event, context):
     print("print this ")
     table = dynamodb.Table(os.environ['TABLE_NAME'])
     comments_list = []
-    postId = 'POST#{}'.format(event['pathParameters']['postId'])
+    postId = 'POST#{}'.format(event['pathParameters']['id'])
 
     print(postId)
 
