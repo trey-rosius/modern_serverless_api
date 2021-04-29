@@ -20,7 +20,7 @@ def get_post_comments(event, context):
 
     result = table.query(
         KeyConditionExpression=
-        Key('PK').eq(postId) & Key('SK').between(postId, 'COMMENT$'),
+        Key('PK').eq(postId) & Key('SK').begins_with('COMMENT$'),
         ScanIndexForward=True
     )
     # create a response

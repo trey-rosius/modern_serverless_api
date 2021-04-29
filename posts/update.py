@@ -22,7 +22,7 @@ def update_post(event, context):
     item = table.update_item(
         Key={
             'PK': "USER#{}".format(data['userId']),
-            'SK': "POST#{}".format(event['pathParameters']['id'])
+            'SK': "POST#{}#{}".format(event['pathParameters']['id'],data['timestamp'])
 
 
         },

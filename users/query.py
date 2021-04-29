@@ -32,7 +32,7 @@ def fetch_user_and_posts(event, context):
 
     response = {
         "statusCode": 200,
-        "body": json.dumps({"posts": posts_list},
+        "body": json.dumps(result["Items"],
                            cls=decimalencoder.DecimalEncoder)
 
     }

@@ -19,8 +19,8 @@ def create_comment(event, context):
     table = dynamodb.Table(os.environ['TABLE_NAME'])
 
     item = {
-        'PK': "USER#{}".format(data['userId']),
-        'SK': "COMMENT#{}".format(str(uuid.uuid1())),
+        'PK': "POST#{}#{}".format(data['postId'],data['timestamp']),
+        'SK': "COMMENT#{}#{}".format(str(uuid.uuid1()),timestamp),
         'commentId': str(uuid.uuid1()),
         'postId': data['postId'],
         'userId': data['userId'],
