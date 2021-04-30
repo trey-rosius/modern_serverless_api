@@ -131,7 +131,7 @@ Resources:
         HttpPost:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /posts/{id}/comments
+            Path: /posts/{id}/{timestamp}/comments
             Method: get
   FetchPostsByStatusFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -212,7 +212,7 @@ Outputs:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/comment"
   GetPostCommentsApi:
     Description: "API Gateway endpoint URL for Prod stage for Get Post Comments function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/posts/{id}/comments"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/posts/{id}/{timestamp}/comments"
   FetchPostsByStatusApi:
     Description: "API Gateway endpoint URL for Prod stage for fetch posts by status function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/posts/status/{status}"

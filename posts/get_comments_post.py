@@ -14,13 +14,13 @@ def get_post_comments(event, context):
     print("print this ")
     table = dynamodb.Table(os.environ['TABLE_NAME'])
 
-    postId = 'POST#{}'.format(event['pathParameters']['id'])
+    postId = 'POST#{}#{}'.format(event['pathParameters']['id'],event['pathParameters']['timestamp'])
 
     print(postId)
 
     result = table.query(
         KeyConditionExpression=
-        Key('PK').eq(postId) & Key('SK'),
+        Key('PK').eq(postId),
         ScanIndexForward=True
     )
     # create a response
