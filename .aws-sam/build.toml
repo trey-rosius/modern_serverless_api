@@ -13,7 +13,7 @@ codeuri = "/Users/imac/Documents/socially_serverless_api/posts"
 runtime = "python3.8"
 source_md5 = ""
 packagetype = "Zip"
-functions = ["CreatePostFunction", "UpdatePostFunction", "GetPostCommentsFunction"]
+functions = ["CreatePostFunction", "UpdatePostFunction", "GetPostCommentsFunction", "FetchPostsByStatusFunction"]
 
 [function_build_definitions.052f147a-f211-4e78-a5c3-83a49b6d6d22]
 codeuri = "/Users/imac/Documents/socially_serverless_api/comments"

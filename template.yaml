@@ -133,6 +133,22 @@ Resources:
           Properties:
             Path: /posts/{id}/comments
             Method: get
+  FetchPostsByStatusFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: posts/
+      Handler: fetch_posts_by_status.fetch_post
+      Runtime: python3.8
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: data
+
+      Events:
+        HttpPost:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /posts/status/{status}
+            Method: get
 
   DynamoDBTable:
     Type: AWS::DynamoDB::Table  
@@ -197,6 +213,9 @@ Outputs:
   GetPostCommentsApi:
     Description: "API Gateway endpoint URL for Prod stage for Get Post Comments function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/posts/{id}/comments"
+  FetchPostsByStatusApi:
+    Description: "API Gateway endpoint URL for Prod stage for fetch posts by status function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/posts/status/{status}"
 
 
 

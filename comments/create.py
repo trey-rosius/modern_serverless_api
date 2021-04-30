@@ -25,7 +25,6 @@ def create_comment(event, context):
         'postId': data['postId'],
         'userId': data['userId'],
         'commentText': data['commentText'],
-        'status': data['status'],
         'createdOn': timestamp
 
     }

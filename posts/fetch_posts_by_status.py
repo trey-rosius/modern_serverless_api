@@ -8,19 +8,16 @@ from boto3.dynamodb.conditions import Key
 dynamodb = boto3.resource('dynamodb')
 
 
-def get_post_comments(event, context):
+def fetch_post(event, context):
     # print(event)
     # print(event['pathParameters'])
     print("print this ")
     table = dynamodb.Table(os.environ['TABLE_NAME'])
 
-    postId = 'POST#{}'.format(event['pathParameters']['id'])
-
-    print(postId)
-
     result = table.query(
+        IndexName="GSI1",
         KeyConditionExpression=
-        Key('PK').eq(postId) & Key('SK'),
+        Key('status').eq(event['pathParameters']['status']),
         ScanIndexForward=True
     )
     # create a response
